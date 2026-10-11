@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nsight-insight"
+version = "1.0.0"
+description = "Explain GPU idle time in NVIDIA Nsight Systems traces"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Hanan Nasr Zaher" }]
+keywords = ["cuda", "nsight", "profiling", "gpu", "performance"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+nsight-insight = "nsight_insight.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["nsight_insight*"]
+
+[tool.setuptools.package-data]
+nsight_insight = ["template.html"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

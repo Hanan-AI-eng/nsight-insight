@@ -1,0 +1,280 @@
+{
+  "span_us": 207110.546,
+  "util": 0.8389,
+  "kernels": 2640,
+  "copies": 30,
+  "n_gaps": 29,
+  "idle_ms": 33.375,
+  "lanes": [
+    "NVTX ranges",
+    "Blocking CUDA API",
+    "Stream 7",
+    "Memcpy"
+  ],
+  "truncated": false,
+  "gaps": [
+    [
+      74540.809,
+      75418.969,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      144734.949,
+      145613.059,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      137567.102,
+      138430.75,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      123239.148,
+      124102.129,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      95582.58,
+      96444.055,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ],
+    [
+      186071.175,
+      186898.304,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      130476.113,
+      131263.873,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ],
+    [
+      193149.472,
+      193914.183,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      60677.768,
+      61398.822,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ],
+    [
+      172412.689,
+      173128.342,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      88632.019,
+      89319.645,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      6230.695,
+      6916.798,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      200187.98,
+      200873.06,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ],
+    [
+      109370.074,
+      110032.286,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      19891.766,
+      20543.653,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      53660.566,
+      54293.143,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      40100.108,
+      40662.886,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      81791.701,
+      82340.392,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      67627.16,
+      68172.728,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      33225.26,
+      33770.094,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      158814.629,
+      159355.228,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      151939.175,
+      152456.69,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      116369.143,
+      116817.452,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      46996.289,
+      47415.845,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      13357.555,
+      13728.23,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      102686.754,
+      103036.373,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      165567.817,
+      165915.307,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ],
+    [
+      179441.068,
+      179783.779,
+      "CPU was busy in NVTX range 'dataloader.next'"
+    ],
+    [
+      26757.275,
+      27075.169,
+      "CPU was blocked in cudaStreamSynchronize (inside NVTX range 'optimizer.step')"
+    ]
+  ],
+  "findings": [
+    {
+      "sev": "warn",
+      "title": "GPU is busy 84% of the trace",
+      "detail": "33.4 ms of 207.1 ms had nothing running on the GPU (29 gaps longer than 100 us).",
+      "fix": "Work through the idle gaps below, largest first.",
+      "zoom": null
+    },
+    {
+      "sev": "warn",
+      "title": "Idle gap of 878 us at t = 74.54 ms",
+      "detail": "CPU was busy in NVTX range 'dataloader.next'.",
+      "fix": "Overlap this CPU work with GPU compute (prefetch, async copies, a worker thread).",
+      "zoom": [
+        74490.809,
+        75468.969
+      ]
+    },
+    {
+      "sev": "warn",
+      "title": "Idle gap of 878 us at t = 144.73 ms",
+      "detail": "CPU was busy in NVTX range 'dataloader.next'.",
+      "fix": "Overlap this CPU work with GPU compute (prefetch, async copies, a worker thread).",
+      "zoom": [
+        144684.949,
+        145663.059
+      ]
+    },
+    {
+      "sev": "warn",
+      "title": "Idle gap of 864 us at t = 137.57 ms",
+      "detail": "CPU was busy in NVTX range 'dataloader.next'.",
+      "fix": "Overlap this CPU work with GPU compute (prefetch, async copies, a worker thread).",
+      "zoom": [
+        137517.102,
+        138480.75
+      ]
+    },
+    {
+      "sev": "bad",
+      "title": "79% of idle time is inside NVTX range 'dataloader.next'",
+      "detail": "14.3 ms of GPU idle time while the CPU was in this range.",
+      "fix": "This range is the best place to look for the starvation.",
+      "zoom": null
+    },
+    {
+      "sev": "warn",
+      "title": "45% of kernels run under 10 us",
+      "detail": "1200 tiny kernels: launch overhead likely dominates their cost.",
+      "fix": "Fuse elementwise ops (e.g. torch.compile) or capture the sequence with CUDA Graphs.",
+      "zoom": null
+    },
+    {
+      "sev": "bad",
+      "title": "Only 0% of memcpy time overlaps with compute",
+      "detail": "6.1 ms spent copying (3% of the trace).",
+      "fix": "Use cudaMemcpyAsync on a dedicated stream with pinned host memory.",
+      "zoom": null
+    },
+    {
+      "sev": "warn",
+      "title": "All kernels run on a single stream",
+      "detail": "Nothing can overlap with anything else.",
+      "fix": "Put copies and independent work on separate streams.",
+      "zoom": null
+    },
+    {
+      "sev": "warn",
+      "title": "One kernel owns 47% of kernel time",
+      "detail": "volta_sgemm_128x64_nn (360 calls).",
+      "fix": "Best optimisation target: profile it in detail with Nsight Compute.",
+      "zoom": null
+    }
+  ],
+  "top": [
+    {
+      "name": "volta_sgemm_128x64_nn",
+      "calls": 360,
+      "ms": 78.323,
+      "pct": 0.4672
+    },
+    {
+      "name": "implicit_convolve_sgemm",
+      "calls": 360,
+      "ms": 57.601,
+      "pct": 0.3436
+    },
+    {
+      "name": "layer_norm_fwd_kernel",
+      "calls": 360,
+      "ms": 14.322,
+      "pct": 0.0854
+    },
+    {
+      "name": "softmax_warp_forward",
+      "calls": 360,
+      "ms": 10.825,
+      "pct": 0.0646
+    },
+    {
+      "name": "at::native::elementwise_kernel<add>",
+      "calls": 1200,
+      "ms": 6.58,
+      "pct": 0.0392
+    }
+  ],
+  "idle_by_range": [
+    {
+      "name": "dataloader.next",
+      "ms": 14.302,
+      "pct": 0.7935
+    },
+    {
+      "name": "optimizer.step",
+      "ms": 3.721,
+      "pct": 0.2065
+    }
+  ]
+}
